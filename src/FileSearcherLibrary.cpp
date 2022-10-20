@@ -12,7 +12,7 @@ std::vector<long long> curr_path_itr(kNUMBER_OF_CORES, 0);
 std::vector<long long> end_of_range_for_thread(kNUMBER_OF_CORES, 0);
 std::vector<fs::path> subdirectories_pathes;
 
-void FileSearcher::search_for_the_file_in_directory(const char* filename, const char* start_directory){
+void FileSearcher::search_for_the_file_in_directory(const char* filename, const char* start_directory) {
     fs::path start_path(start_directory);
 
     // Get the list of subdirectories nearest to 'start_directory'
@@ -62,7 +62,7 @@ void FileSearcher::set_end_points_for_threads(std::vector<long long>& starting_p
     end_points[kNUMBER_OF_CORES - 1] = number_of_directories;
 }
 
-bool FileSearcher::checked_all_directories(std::vector<long long>& curr_itr, std::vector<long long> &end_itr) {
+bool FileSearcher::checked_all_directories(std::vector<long long>& curr_itr, std::vector<long long>& end_itr) {
     for (int i = 0; i < kNUMBER_OF_CORES; i++)
         if (curr_itr[i] != end_itr[i]) return false;
     return true;
@@ -100,16 +100,16 @@ void FileSearcher::find_file_in_directory(const char* file_to_find, const char* 
         if (entry.is_directory())
             find_file_in_directory(file_to_find, start_dir, entry.path(), NOT_ROOT_NEAREST_SUBFOLDER);
         else if (entry.is_regular_file() && strcmp(entry.path().filename().string().c_str(), file_to_find) == 0) {
-            std::cout << "Way: " << start_dir << entry.path().relative_path().string() << std::endl;
+            std::cout << "Path: " << start_dir << entry.path().relative_path().string() << std::endl;
             FOUND_THE_FILE = true;
         }
 
         if (FOUND_THE_FILE) break;
     }
 
-    if (subdirectory_index != NOT_ROOT_NEAREST_SUBFOLDER) 
+    if (subdirectory_index != NOT_ROOT_NEAREST_SUBFOLDER)
         curr_path_itr[subdirectory_index]++;
-    
+
     if (FOUND_THE_FILE) return;
     return;
 }
